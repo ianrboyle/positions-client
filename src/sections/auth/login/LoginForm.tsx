@@ -18,8 +18,6 @@ export default function LoginForm() {
 
   const handleClick = () => {
     // setUser(user);
-    console.log("user", user);
-    console.log("password", password);
     if (typeof(user) === "string" && typeof(password) === "string") {
       const loginInfo = {
         username: user,
@@ -28,7 +26,6 @@ export default function LoginForm() {
 
       // loginUser(loginInfo).then(res => res)
       AuthService.login(user,password).then((r ) =>{
-        console.log("RESPONSE: ", r)
         return r;
        })
     }
