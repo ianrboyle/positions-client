@@ -1,21 +1,19 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
-import { Grid, Button, Container, Stack, Typography, Modal, Box, TextField } from '@mui/material';
+import { Grid, Button, Container, Stack, Typography, Modal, Box } from '@mui/material';
 // components
 // import Iconify from '../components/iconify';
 import { Icon } from '@iconify/react';
-import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
+import { BlogPostCard, BlogPostsSearch } from '../sections/@dashboard/blog';
 // mock
 import POSTS from '../_mock/blog';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ButtonProps } from '@material-ui/core/Button';
 import { useState } from 'react';
-import { LoadingButton } from '@mui/lab';
 import { AddPositionForm } from '../components/forms/AddPositionForm';
+import { useFetchPositionsQuery } from '../store';
 
-interface IconButtonProps extends ButtonProps {
-  icon: string;
-}
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -28,6 +26,10 @@ const style = {
   p: 4,
 };
 export const PositionsPage = () =>  {
+  const { data, error, isLoading } = useFetchPositionsQuery(null);
+  console.log("fetch positions: ", data, error, isLoading)
+
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -63,7 +65,6 @@ export const PositionsPage = () =>  {
       <BlogPostsSearch posts={POSTS} />
       {/* <BlogPostsSort options={SORT_OPTIONS} /> */}
     </Stack>
-
     <Grid container spacing={3}>
       {POSTS.map((post, index) => (
         <BlogPostCard key={post.id} post={post} index={index} />
