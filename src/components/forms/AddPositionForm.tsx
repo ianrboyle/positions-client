@@ -2,7 +2,7 @@ import { LoadingButton } from "@mui/lab"
 import { TextField } from "@mui/material"
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
-import { addPosition } from "../../services/positions.server";
+import { addPosition, getPositionsFetch } from "../../services/positions.server";
 
 export type AddPositionFormValues = {
   symbol: string,
@@ -12,12 +12,9 @@ export type AddPositionFormValues = {
 export const AddPositionForm = () => {
   const {register, control, handleSubmit} = useForm<AddPositionFormValues>();
   const [positionToAdd, setPositionToAdd] = useState<AddPositionFormValues | null>(null);
-  console.log("register:" , register('symbol'))
 
-  const handleAddPosition: SubmitHandler<AddPositionFormValues> = (formValues) => {
-    console.log("formValues" ,formValues)
-    const idk =  addPosition(formValues);
-    console.log("ID: ", idk)
+  const handleAddPosition: SubmitHandler<AddPositionFormValues> = async (formValues) => {
+    addPosition(formValues);
   }
   
   return (
