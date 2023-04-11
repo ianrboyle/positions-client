@@ -1,21 +1,23 @@
 import { configureStore} from '@reduxjs/toolkit'
-import { positionReducer, addPosition, removePosition, changeSearchTerm } from './slices/positionSlice'
+import { IPosition } from '../models/position.model';
 
-import {formReducer, changeSharesOwned, changeSymbol} from  './slices/positionFormSlice'
+import { positionsApi, useFetchPositionsQuery } from './apis/positionsApi';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
+export interface IPositionsState {
+  positions: IPosition[]
+}
 const store = configureStore({
   reducer: {
-    positions: positionReducer,
-    positionForm: formReducer
-  }
+    [positionsApi.reducerPath]: positionsApi.reducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(positionsApi.middleware),
 
 });
 
+setupListeners(store.dispatch)
 export {
   store,
-  changeSearchTerm,
-  changeSymbol,
-  changeSharesOwned,
-  addPosition,
-  removePosition
+  useFetchPositionsQuery
 }
