@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
+import { Icon } from '@iconify/react';
 // sections
 import {
   AppTasks,
@@ -33,6 +34,20 @@ export default function DashboardAppPage() {
         value: s.totalValue
       }
     })
+    const industryChartData: IPieChartData[] | undefined = data?.industries.map(i => {
+      return {
+        label: i.industryName,
+        value: i.totalValue
+      }
+    })
+    const positionChartData: IPieChartData[] | undefined = data?.positions.map(p => {
+      return {
+        label: p.symbol,
+        value: p.totalCostBasis
+      }
+    })
+
+
   // }
 
   console.log(data)
@@ -118,6 +133,20 @@ export default function DashboardAppPage() {
                   </Grid> 
                   : null
           }      
+          { positionChartData !== undefined && positionChartData.length > 0 ? 
+                    <Grid item xs={12} md={6} lg={4}>
+                    <SectorPie
+                      title="Position Allocation"
+                      chartData={positionChartData}
+                      chartColors={[
+                        theme.palette.primary.main,
+                        theme.palette.info.main,
+                        theme.palette.warning.main,
+                        theme.palette.error.main,
+                      ]} subheader={undefined}            />
+                  </Grid> 
+                  : null
+          }      
 
 
           <Grid item xs={12} md={6} lg={8}>
@@ -139,17 +168,20 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentSubject
-              title="Current Subject"
-              chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
-              chartData={[
-                { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-                { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-                { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
-              ]}
-              chartColors={[...Array(6)].map(() => theme.palette.text.secondary)} subheader={undefined}            />
-          </Grid>
+          { industryChartData !== undefined && industryChartData.length > 0 ? 
+                    <Grid item xs={12} md={6} lg={4}>
+                    <SectorPie
+                      title="Industry Allocation"
+                      chartData={industryChartData}
+                      chartColors={[
+                        theme.palette.primary.main,
+                        theme.palette.info.main,
+                        theme.palette.warning.main,
+                        theme.palette.error.main,
+                      ]} subheader={undefined}            />
+                  </Grid> 
+                  : null
+          }      
 
           <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
@@ -180,32 +212,32 @@ export default function DashboardAppPage() {
               }))} subheader={undefined}            />
           </Grid>
 
-          {/* <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={4}>
             <AppTrafficBySite
               title="Traffic by Site"
               list={[
                 {
                   name: 'FaceBook',
                   value: 323234,
-                  icon: <Iconify icon={'eva:facebook-fill'} color="#1877F2" width={32} />,
+                  icon: <Icon icon={'eva:facebook-fill'} color="#1877F2" width={32} />,
                 },
                 {
                   name: 'Google',
                   value: 341212,
-                  icon: <Iconify icon={'eva:google-fill'} color="#DF3E30" width={32} />,
+                  icon: <Icon icon={'eva:google-fill'} color="#DF3E30" width={32} />,
                 },
                 {
                   name: 'Linkedin',
                   value: 411213,
-                  icon: <Iconify icon={'eva:linkedin-fill'} color="#006097" width={32} />,
+                  icon: <Icon icon={'eva:linkedin-fill'} color="#006097" width={32} />,
                 },
                 {
                   name: 'Twitter',
                   value: 443232,
-                  icon: <Iconify icon={'eva:twitter-fill'} color="#1C9CEA" width={32} />,
+                  icon: <Icon icon={'eva:twitter-fill'} color="#1C9CEA" width={32} />,
                 },
               ]} subheader={undefined}            />
-          </Grid> */}
+          </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks
