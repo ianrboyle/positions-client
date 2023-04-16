@@ -63,9 +63,9 @@ export const PositionsPage = () =>  {
   aria-describedby="modal-modal-description"
 >
   <Box sx={style}>
-  <Stack spacing={3}>
-    <AddPositionForm />
-      </Stack>
+    <Stack spacing={3}>
+      <AddPositionForm handleClose={handleClose}/>
+    </Stack>
   </Box>
 </Modal>
 

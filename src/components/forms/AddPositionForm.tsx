@@ -9,12 +9,15 @@ export type AddPositionFormValues = {
   sharesPurchased: number,
   costBasis: number
 }
-export const AddPositionForm = () => {
+type AddPositionFormProps = {
+  handleClose: () => void;
+};
+export const AddPositionForm = ({handleClose}: AddPositionFormProps) => {
   const {register, control, handleSubmit} = useForm<AddPositionFormValues>();
-  const [positionToAdd, setPositionToAdd] = useState<AddPositionFormValues | null>(null);
 
   const handleAddPosition: SubmitHandler<AddPositionFormValues> = async (formValues) => {
     addPosition(formValues);
+    handleClose();
   }
   
   return (
