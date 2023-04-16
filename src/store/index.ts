@@ -2,6 +2,7 @@ import { configureStore} from '@reduxjs/toolkit'
 import { IPosition } from '../models/position.model';
 
 import { positionsApi, useFetchPositionsQuery } from './apis/positionsApi';
+import { userApi, useFetchUserQuery } from './apis/userApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export interface IPositionsState {
@@ -9,15 +10,17 @@ export interface IPositionsState {
 }
 const store = configureStore({
   reducer: {
-    [positionsApi.reducerPath]: positionsApi.reducer
+    [positionsApi.reducerPath]: positionsApi.reducer,
+    [userApi.reducerPath]: userApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(positionsApi.middleware),
+    getDefaultMiddleware().concat(positionsApi.middleware).concat(userApi.middleware)
 
 });
 
 setupListeners(store.dispatch)
 export {
   store,
-  useFetchPositionsQuery
+  useFetchPositionsQuery,
+  useFetchUserQuery
 }
