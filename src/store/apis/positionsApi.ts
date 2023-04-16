@@ -17,6 +17,19 @@ const positionsApi = createApi({
   }),
   endpoints (builder) {
     return {
+
+      addPosition: builder.mutation({
+        query: ({symbol, sharesOwned}: IPosition) => {
+          return {  
+            url: '/positions/add-position',
+            method: 'POST',
+            body: {
+              symbol: symbol,
+              sharesOwned: sharesOwned
+            }
+          }
+        }
+      }),
       fetchPositions: builder.query<IPosition[], void>({
         query: () => {
           return {  
@@ -29,7 +42,7 @@ const positionsApi = createApi({
   } 
 });
 
-export const { useFetchPositionsQuery } = positionsApi;
+export const { useFetchPositionsQuery, useAddPositionMutation } = positionsApi;
 export {positionsApi};
 
 

@@ -2,7 +2,9 @@ import { LoadingButton } from "@mui/lab"
 import { TextField } from "@mui/material"
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
-import { addPosition, getPositionsFetch } from "../../services/positions.server";
+// import { addPosition, getPositionsFetch } from "../../services/positions.server";
+import { useAddPositionMutation } from "../../store";
+import { IPosition } from "../../models/position.model";
 
 export type AddPositionFormValues = {
   symbol: string,
@@ -13,9 +15,9 @@ type AddPositionFormProps = {
   handleClose: () => void;
 };
 export const AddPositionForm = ({handleClose}: AddPositionFormProps) => {
-  const {register, control, handleSubmit} = useForm<AddPositionFormValues>();
-
-  const handleAddPosition: SubmitHandler<AddPositionFormValues> = async (formValues) => {
+  const {register, control, handleSubmit} = useForm<IPosition>();
+  const [addPosition, results] = useAddPositionMutation();
+  const handleAddPosition: SubmitHandler<IPosition> = async (formValues) => {
     addPosition(formValues);
     handleClose();
   }
@@ -27,11 +29,11 @@ export const AddPositionForm = ({handleClose}: AddPositionFormProps) => {
 
   <TextField label="Ticker symbol" {...register('symbol')}/>
   <TextField
-    {...register('sharesPurchased')}
+    {...register('sharesOwned')}
     label="Shares Purchased" />
     <TextField
-      {...register('costBasis')}
-      label="Cost Basis" />
+      {...register('purchasePrice')}
+      label="Purchase Price" />
       
       <LoadingButton fullWidth size="large" type="submit" variant="contained">
       Add Position
