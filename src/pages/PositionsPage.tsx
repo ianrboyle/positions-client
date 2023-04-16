@@ -13,7 +13,14 @@ import { ButtonProps } from '@material-ui/core/Button';
 import { useState } from 'react';
 import { AddPositionForm } from '../components/forms/AddPositionForm';
 import { useFetchPositionsQuery } from '../store';
-
+import PositionsTable from '../components/tables/PositionsTable';
+import BasicTable from '../components/tables/RandomTable'
+import { IPosition } from '../models/position.model';
+interface IData {
+  data: {
+    positions: IPosition[]
+  }
+}
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -25,10 +32,12 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-export const PositionsPage = () =>  {
-  const { data, error, isLoading } = useFetchPositionsQuery(null);
-  console.log("fetch positions: ", data, error, isLoading)
 
+export const PositionsPage = () =>  {
+  const { data, error, isLoading } = useFetchPositionsQuery();
+  console.log("fetch positions: ", data, error, isLoading)
+  const positions = data;
+  
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -63,12 +72,17 @@ export const PositionsPage = () =>  {
 
     <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
       <BlogPostsSearch posts={POSTS} />
-      {/* <BlogPostsSort options={SORT_OPTIONS} /> */}
+
     </Stack>
+
+    { 
+    data && data.length > 0 ? 
+    <BasicTable positions={data}/>  :
+    null
+  }
+    
     <Grid container spacing={3}>
-      {POSTS.map((post, index) => (
-        <BlogPostCard key={post.id} post={post} index={index} />
-      ))}
+
     </Grid>
   </Container>
 </>

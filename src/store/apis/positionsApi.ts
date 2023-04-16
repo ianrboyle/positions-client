@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { IPosition } from '../../models/position.model';
 
 
 const positionsApi = createApi({
@@ -16,7 +17,7 @@ const positionsApi = createApi({
   }),
   endpoints (builder) {
     return {
-      fetchPositions: builder.query({
+      fetchPositions: builder.query<IPosition[], void>({
         query: () => {
           return {  
             url: '/positions',
