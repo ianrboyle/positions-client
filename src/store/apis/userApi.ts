@@ -18,7 +18,7 @@ const userApi = createApi({
   }),
   endpoints (builder) {
     return {
-      fetchUser: builder.query<MemberDto[], void>({
+      fetchUser: builder.query<MemberDto, void>({
         query: () => {
           return {  
             url: '/users',

@@ -13,7 +13,6 @@ import { ButtonProps } from '@material-ui/core/Button';
 import { useState } from 'react';
 import { AddPositionForm } from '../components/forms/AddPositionForm';
 import { useFetchPositionsQuery } from '../store';
-import PositionsTable from '../components/tables/PositionsTable';
 import BasicTable from '../components/tables/RandomTable'
 import { IPosition } from '../models/position.model';
 interface IData {

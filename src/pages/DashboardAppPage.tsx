@@ -17,13 +17,26 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
-import { useFetchPositionsQuery } from '../store';
+import { useFetchPositionsQuery, useFetchUserQuery } from '../store';
+import SectorPie from '../sections/@dashboard/app/SectorPie';
+import { IPieChartData } from '../models/pies.model';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
-  const { data, error, isLoading } = useFetchPositionsQuery();
+  // const { data, error, isLoading } = useFetchPositionsQuery();
+  const { data, error, isLoading } = useFetchUserQuery();
+  // if (data !== undefined){
+    const sectorChartData: IPieChartData[] | undefined = data?.sectors.map(s => {
+      return {
+        label: s.sectorName,
+        value: s.totalValue
+      }
+    })
+  // }
 
+  console.log(data)
+  console.log(sectorChartData)
   return (
     <>
       <Helmet>
@@ -91,23 +104,21 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid>
+          { sectorChartData !== undefined && sectorChartData.length > 0 ? 
+                    <Grid item xs={12} md={6} lg={4}>
+                    <SectorPie
+                      title="Sector Allocation"
+                      chartData={sectorChartData}
+                      chartColors={[
+                        theme.palette.primary.main,
+                        theme.palette.info.main,
+                        theme.palette.warning.main,
+                        theme.palette.error.main,
+                      ]} subheader={undefined}            />
+                  </Grid> 
+                  : null
+          }      
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentVisits
-              title="Current Visits"
-              chartData={[
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
-              ]}
-              chartColors={[
-                theme.palette.primary.main,
-                theme.palette.info.main,
-                theme.palette.warning.main,
-                theme.palette.error.main,
-              ]} subheader={undefined}            />
-          </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
