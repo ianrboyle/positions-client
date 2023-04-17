@@ -16,6 +16,8 @@ import { useFetchPositionsQuery } from '../store';
 import BasicTable from '../components/tables/RandomTable'
 import { IPosition } from '../models/position.model';
 import CircularIndeterminate from '../components/progress/Spinner';
+import SkeletonAnimation from '../components/progress/Skeleton';
+
 interface IData {
   data: {
     positions: IPosition[]
@@ -75,8 +77,8 @@ export const PositionsPage = () =>  {
 
     </Stack>
     { isLoading ? 
-    <CircularIndeterminate /> :   
-     
+    <SkeletonAnimation /> :   
+    
       (data && data.length > 0) ? 
       <BasicTable positions={data}/>  :
       null

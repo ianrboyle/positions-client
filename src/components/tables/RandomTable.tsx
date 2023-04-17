@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import { useFetchPositionsQuery } from '../../store';
 import { IPosition } from '../../models/position.model';
 
+
 interface Column {
   id: 'symbol' | 'sharesOwned' | 'id' | 'companyName' | 'currentPrice' | 'industryId' | 'purchasePrice' | 'totalCostBasis' | 'averageCostBasis' | 'sectorId';
   label: string;
@@ -83,22 +84,9 @@ interface Data {
   density: number;
 }
 
-function createData(
-  name: string,
-  code: string,
-  population: number,
-  size: number,
-): Data {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
 
-// const rows: IPosition[] = [];
 
 export default function BasicTable({positions}: IData) {
-  // const { data, error, isLoading } = useFetchPositionsQuery(null);
-  // const positions: IPosition[] = data;
-  console.log(positions)
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -111,7 +99,6 @@ export default function BasicTable({positions}: IData) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  // if (positions !== undefined) {
     return (
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -134,10 +121,10 @@ export default function BasicTable({positions}: IData) {
               
                     { positions
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row: any) => {
-                        return (
-                          <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                            {columns.map((column) => {
+                      .map((row: any) => {       
+                        return (                         
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>                     
+                            {columns.map((column) => {                   
                               const value = row[column.id];
                               return (
                                 <TableCell key={column.id} align={column.align}>

@@ -43,7 +43,7 @@ export const AddPositionForm = ({handleClose}: AddPositionFormProps) => {
       {...register('purchasePrice')}
       label="Purchase Price" />
       
-      <LoadingButton loading={results.isLoading} fullWidth size="large" type="submit" variant="contained">
+      <LoadingButton loadingIndicator={results.isLoading} loading={results.isLoading} fullWidth size="large" type="submit" variant="contained">
       Add Position
     </LoadingButton>
   </form>
