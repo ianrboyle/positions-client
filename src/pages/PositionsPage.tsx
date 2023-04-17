@@ -15,6 +15,7 @@ import { AddPositionForm } from '../components/forms/AddPositionForm';
 import { useFetchPositionsQuery } from '../store';
 import BasicTable from '../components/tables/RandomTable'
 import { IPosition } from '../models/position.model';
+import CircularIndeterminate from '../components/progress/Spinner';
 interface IData {
   data: {
     positions: IPosition[]
@@ -73,12 +74,14 @@ export const PositionsPage = () =>  {
       <BlogPostsSearch posts={POSTS} />
 
     </Stack>
+    { isLoading ? 
+    <CircularIndeterminate /> :   
+     
+      (data && data.length > 0) ? 
+      <BasicTable positions={data}/>  :
+      null
+      } 
 
-    { 
-    data && data.length > 0 ? 
-    <BasicTable positions={data}/>  :
-    null
-  }
     
     <Grid container spacing={3}>
 
