@@ -5,6 +5,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 // import { addPosition, getPositionsFetch } from "../../services/positions.server";
 import { useAddPositionMutation } from "../../store";
 import { IPosition } from "../../models/position.model";
+import CircularIndeterminate from "../progress/Spinner";
 
 export type AddPositionFormValues = {
   symbol: string,
@@ -17,14 +18,21 @@ type AddPositionFormProps = {
 export const AddPositionForm = ({handleClose}: AddPositionFormProps) => {
   const {register, control, handleSubmit} = useForm<IPosition>();
   const [addPosition, results] = useAddPositionMutation();
+
+
   const handleAddPosition: SubmitHandler<IPosition> = async (formValues) => {
     addPosition(formValues);
+
     handleClose();
   }
   
   return (
     
   <>
+
+
+  {results.isLoading ? 
+<CircularIndeterminate /> :   
   <form onSubmit={handleSubmit(handleAddPosition)}>
 
   <TextField label="Ticker symbol" {...register('symbol')}/>
@@ -35,10 +43,11 @@ export const AddPositionForm = ({handleClose}: AddPositionFormProps) => {
       {...register('purchasePrice')}
       label="Purchase Price" />
       
-      <LoadingButton fullWidth size="large" type="submit" variant="contained">
+      <LoadingButton loading={results.isLoading} fullWidth size="large" type="submit" variant="contained">
       Add Position
     </LoadingButton>
   </form>
+}
     </>
 
   )
