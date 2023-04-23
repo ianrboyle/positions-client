@@ -12,6 +12,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Papa from "papaparse";
+import { CsvPosition } from "../models/csv.model";
+import { parseCsvFile } from "../utils/formatCsvPositions";
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +43,20 @@ const rows = [
 // ----------------------------------------------------------------------
 
 export default function Page404() {
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (results: Papa.ParseResult<any>) => {
+          const parsedData = parseCsvFile(results.data);
+          // `results.data` contains the parsed CSV data as an array of objects
+          console.log(parsedData);
+        },
+      });
+    }
+  };
   return (
     <>
     
@@ -73,6 +90,8 @@ export default function Page404() {
         </TableBody>
       </Table>
     </TableContainer>
+
+    <input type="file" onChange={handleFileUpload} />
     </Container>
     </>
   );

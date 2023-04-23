@@ -18,13 +18,32 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+import Papa from 'papaparse';
 import { useFetchPositionsQuery, useFetchUserQuery } from '../store';
 import SectorPie from '../sections/@dashboard/app/SectorPie';
 import { IPieChartData } from '../models/pies.model';
+import { CsvPosition } from '../models/csv.model';
+import { parseCsvFile } from '../utils/formatCsvPositions';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+ 
+
+// Load CSV file
+const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files?.[0];
+  if (file) {
+    Papa.parse(file, {
+      header: true,
+      complete: (results: Papa.ParseResult<CsvPosition>) => {
+        const parsedData = parseCsvFile(results.data);
+        // `results.data` contains the parsed CSV data as an array of objects
+        console.log(parsedData);
+      },
+    });
+  }
+};
   // const { data, error, isLoading } = useFetchPositionsQuery();
   const { data, error, isLoading } = useFetchUserQuery();
   // if (data !== undefined){
@@ -65,7 +84,7 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-
+          <input type="file" onChange={handleFileUpload} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
