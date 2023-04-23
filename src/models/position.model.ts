@@ -10,3 +10,13 @@ export interface IPosition {
   averageCostBasis: number,
   sectorId: number
 }
+
+export interface IUpdatePosition {
+  symbol: string,
+  id: number,
+  sharesAdded?: number,
+  sharesSold?: number,
+  purchasePrice?: number,
+  sellPrice?: number
+
+}

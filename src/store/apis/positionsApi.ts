@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IPosition } from '../../models/position.model';
+import { IPosition, IUpdatePosition } from '../../models/position.model';
 
 const pause = (duration: number) => {
   return new Promise((resolve) => {
@@ -41,6 +41,19 @@ const positionsApi = createApi({
           }
         }
       }),
+      // updatePosition: builder.mutation({
+      //   invalidatesTags: ['Positions'],
+      //   query: ({symbol, sharesAdded, sharesSold, purchasePrice, sellPrice}: IUpdatePosition ) => {
+      //     return {
+      //       url: '/positions/add-position',
+      //       method: 'POST',
+      //       body: {
+      //         symbol: symbol,
+      //         sharesOwned: sharesOwned
+      //       }
+      //     }
+      //     }
+      //   }),
       fetchPositions: builder.query<IPosition[], void>({
         providesTags: ['Positions'],
         query: () => {
