@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { filter, isArrayLike } from "lodash";
 import { sentenceCase } from "change-case";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useFetchPositionsQuery } from "../store";
 // @mui
 import {
@@ -113,91 +114,20 @@ export default function UserPage() {
   const { data, error, isLoading } = useFetchPositionsQuery();
 
   const positions = !isLoading ? data : [];
-  // const [open, setOpen] = useState(null);
-
-  // const [page, setPage] = useState(0);
-
-  // const [order, setOrder] = useState("asc");
-
-  // const [selected, setSelected] = useState([]);
-
-  // const [orderBy, setOrderBy] = useState("symbol");
-
-  // const [filterName, setFilterName] = useState("");
-
-  // const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
-
-  // const handleCloseMenu = () => {
-  //   setOpen(null);
-  //   console.log("handleclosemenu");
-  // };
-
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === "asc";
-  //   setOrder(isAsc ? "desc" : "asc");
-  //   setOrderBy(property);
-  // };
-
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = positions.map((n) => n.symbol);
-  //     setSelected(newSelecteds);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
-
-  // const handleClick = (event, name) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-  //   }
-  //   setSelected(newSelected);
-  // };
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setPage(0);
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  // };
-
-  // const handleFilterByName = (event) => {
-  //   setPage(0);
-  //   setFilterName(event.target.value);
-  // };
-
-  // const handleEditPosition = (event) => {};
-
-  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - positions.length) : 0;
-
-  // const filteredUsers = positions ? applySortFilter(positions, getComparator(order, orderBy), filterName) : null;
-  // // const isNotFound = !filteredUsers.length && !!filterName;
-  // const isNotFound = false;
-
   const [open, setOpen] = useState<HTMLElement | null>(null);
+  const [positionId, setPositionId] = useState<number | null>(null);
   const [page, setPage] = useState<number>(0);
   const [order, setOrder] = useState<"asc" | "desc">("asc");
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
   const [orderBy, setOrderBy] = useState<keyof IPosition>("symbol");
   const [filterName, setFilterName] = useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
-  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, id: number) => {
+    console.log(id)
+    console.log("event: ", event.currentTarget)
     setOpen(event.currentTarget);
+    setPositionId(id);
   };
 
   const handleCloseMenu = () => {
@@ -213,18 +143,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = positions ? positions.map((n) => n.symbol) : null;
+      const newSelecteds = positions ? positions.map((n) => n.id) : null;
       if (newSelecteds) setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
+  const handleClick = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: number[] = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -233,6 +163,7 @@ export default function UserPage() {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
+    console.log(newSelected)
   };
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -299,12 +230,12 @@ export default function UserPage() {
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, symbol, sharesOwned, companyName, currentTotalValue } = row;
-                    const selectedUser = selected.indexOf(symbol) !== -1;
+                    const selectedUser = selected.indexOf(id) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, symbol)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
                         
 
@@ -328,7 +259,7 @@ export default function UserPage() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
                             <Icon icon={"eva:more-vertical-fill"} />
                           </IconButton>
                         </TableCell>
@@ -400,9 +331,9 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem onClick={handleModalOpen}>
+        <MenuItem>
           <Icon icon={"eva:edit-fill"}  />
-          Edit
+          <Link to={`/dashboard/edit-position/${positionId}`}>Edit</Link>
         </MenuItem>
 
         <MenuItem sx={{ color: "error.main" }}>
