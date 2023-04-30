@@ -1,7 +1,7 @@
 import { configureStore} from '@reduxjs/toolkit'
 import { IPosition } from '../models/position.model';
 
-import { positionsApi, useFetchPositionsQuery, useAddPositionMutation } from './apis/positionsApi';
+import { positionsApi, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation } from './apis/positionsApi';
 import { userApi, useFetchUserQuery } from './apis/userApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
@@ -23,5 +23,6 @@ export {
   store,
   useFetchPositionsQuery,
   useFetchUserQuery,
-  useAddPositionMutation
+  useAddPositionMutation,
+  useAddPositionsMutation
 }

@@ -15,6 +15,8 @@ import Paper from "@mui/material/Paper";
 import Papa from "papaparse";
 import { CsvPosition } from "../models/csv.model";
 import { parseCsvFile } from "../utils/formatCsvPositions";
+import { useAddPositionMutation, useAddPositionsMutation } from "../store";
+import CircularIndeterminate from "../components/progress/Spinner";
 
 // ----------------------------------------------------------------------
 
@@ -43,16 +45,18 @@ const rows = [
 // ----------------------------------------------------------------------
 
 export default function Page404() {
-
+  const [addPositions, results] = useAddPositionsMutation();
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       Papa.parse(file, {
         header: true,
         complete: (results: Papa.ParseResult<any>) => {
+          console.log(results.data)
           const parsedData = parseCsvFile(results.data);
-          // `results.data` contains the parsed CSV data as an array of objects
-          console.log(parsedData);
+          console.log(parsedData)
+          addPositions(parsedData.filter(p => p.symbol === "FCX"));
+
         },
       });
     }
@@ -92,6 +96,10 @@ export default function Page404() {
     </TableContainer>
 
     <input type="file" onChange={handleFileUpload} />
+    {results.isLoading ? 
+    
+    <CircularIndeterminate /> : null
+  }
     </Container>
     </>
   );

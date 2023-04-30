@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IPosition, IUpdatePosition } from '../../models/position.model';
+import { ParsedCsvPosition } from '../../models/csv.model';
 
 const pause = (duration: number) => {
   return new Promise((resolve) => {
@@ -41,6 +42,16 @@ const positionsApi = createApi({
           }
         }
       }),
+      addPositions: builder.mutation({
+        invalidatesTags: ['Positions'],
+        query: (parsedCsvPositions: ParsedCsvPosition[]) => {
+          return {  
+            url: '/positions/add-positions',
+            method: 'POST',
+            body: parsedCsvPositions
+          }
+        }
+      }),
       // updatePosition: builder.mutation({
       //   invalidatesTags: ['Positions'],
       //   query: ({symbol, sharesAdded, sharesSold, purchasePrice, sellPrice}: IUpdatePosition ) => {
@@ -67,7 +78,7 @@ const positionsApi = createApi({
   } 
 });
 
-export const { useFetchPositionsQuery, useAddPositionMutation } = positionsApi;
+export const { useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation } = positionsApi;
 export {positionsApi};
 
 
