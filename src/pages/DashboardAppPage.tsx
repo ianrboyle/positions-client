@@ -19,11 +19,12 @@ import {
   AppConversionRates,
 } from '../sections/@dashboard/app';
 import Papa from 'papaparse';
-import { useFetchPositionsQuery, useFetchUserQuery } from '../store';
+import { useAddPositionsMutation, useFetchPositionsQuery, useFetchUserQuery } from '../store';
 import SectorPie from '../sections/@dashboard/app/SectorPie';
 import { IPieChartData } from '../models/pies.model';
 import { CsvPosition } from '../models/csv.model';
 import { parseCsvFile } from '../utils/formatCsvPositions';
+import CircularIndeterminate from '../components/progress/Spinner';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
@@ -31,19 +32,22 @@ export default function DashboardAppPage() {
  
 
 // Load CSV file
-const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (file) {
-    Papa.parse(file, {
-      header: true,
-      complete: (results: Papa.ParseResult<CsvPosition>) => {
-        const parsedData = parseCsvFile(results.data);
-        // `results.data` contains the parsed CSV data as an array of objects
-        console.log(parsedData);
-      },
-    });
-  }
-};
+const [addPositions, results] = useAddPositionsMutation();
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (results: Papa.ParseResult<any>) => {
+          console.log(results.data)
+          const parsedData = parseCsvFile(results.data);
+          console.log(parsedData)
+          addPositions(parsedData.splice(21,22));
+
+        },
+      });
+    }
+  };
   // const { data, error, isLoading } = useFetchPositionsQuery();
   const { data, error, isLoading } = useFetchUserQuery();
   // if (data !== undefined){
@@ -83,11 +87,9 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
-          <input type="file" onChange={handleFileUpload} />
-          </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          {/* ADD ACCOUNT TOTAL VALUE SOMEWHERE HERE */}
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} sx={undefined} />
           </Grid>
 
@@ -97,8 +99,8 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} sx={undefined} />
-          </Grid>
-
+          </Grid> */}
+{/* 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
@@ -137,7 +139,7 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                 },
               ]}
             />
-          </Grid>
+          </Grid> */}
           { sectorChartData !== undefined && sectorChartData.length > 0 ? 
                     <Grid item xs={12} md={6} lg={4}>
                     <SectorPie
@@ -168,7 +170,7 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
           }      
 
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
               title="Conversion Rates"
               subheader="(+43%) than last year"
@@ -185,7 +187,7 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                 { label: 'United Kingdom', value: 1380 },
               ]}
             />
-          </Grid>
+          </Grid> */}
 
           { industryChartData !== undefined && industryChartData.length > 0 ? 
                     <Grid item xs={12} md={6} lg={4}>
@@ -202,7 +204,7 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                   : null
           }      
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
               title="News Update"
               list={[...Array(5)].map((_, index) => ({
@@ -212,8 +214,8 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                 image: `/assets/images/covers/cover_${index + 1}.jpg`,
                 postedAt: faker.date.recent(),
               }))} subheader={undefined}            />
-          </Grid>
-
+          </Grid> */}
+{/* 
           <Grid item xs={12} md={6} lg={4}>
             <AppOrderTimeline
               title="Order Timeline"
@@ -229,8 +231,8 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                 type: `order${index + 1}`,
                 time: faker.date.past(),
               }))} subheader={undefined}            />
-          </Grid>
-
+          </Grid> */}
+{/* 
           <Grid item xs={12} md={6} lg={4}>
             <AppTrafficBySite
               title="Traffic by Site"
@@ -268,7 +270,15 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                 { id: '4', label: 'Scoping & Estimations' },
                 { id: '5', label: 'Sprint Showcase' },
               ]} subheader={undefined}            />
-          </Grid>
+          </Grid> */}
+                {results.isLoading ? 
+    
+    <CircularIndeterminate /> :
+
+      <input type="file" onChange={handleFileUpload} />
+
+
+    }
         </Grid>
       </Container>
     </>
