@@ -12,7 +12,7 @@ import { IPosition } from '../../models/position.model';
 
 
 interface Column {
-  id: 'symbol' | 'sharesOwned' | 'id' | 'companyName' | 'currentPrice' | 'industryId' | 'purchasePrice' | 'totalCostBasis' | 'averageCostBasis' | 'sectorId';
+  id: 'symbol' | 'sharesOwned' | 'companyName'  | 'currentTotalValue' | 'currentPrice' | 'purchasePrice' | 'totalCostBasis' | 'averageCostBasis';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -27,26 +27,20 @@ const columns: readonly Column[] = [
   { id: 'symbol', label: 'Symbol', minWidth: 170 },
   { id: 'sharesOwned', label: 'Shares Owned', minWidth: 100 },
   {
-    id: 'id',
-    label: 'Id',
-    minWidth: 170,
-    align: 'right',
-  },
-  {
     id: 'companyName',
     label: 'Company Name',
     minWidth: 170,
     align: 'right',
   },
   {
-    id: 'currentPrice',
-    label: 'Current Price',
+    id: 'currentTotalValue',
+    label: 'Current Total Value',
     minWidth: 170,
     align: 'right',
   },
   {
-    id: 'industryId',
-    label: 'Industry Id',
+    id: 'currentPrice',
+    label: 'Current Price',
     minWidth: 170,
     align: 'right',
   },
@@ -68,12 +62,7 @@ const columns: readonly Column[] = [
     minWidth: 170,
     align: 'right',
   },
-  {
-    id: 'sectorId',
-    label: 'sectorId',
-    minWidth: 170,
-    align: 'right',
-  },
+
 ];
 
 interface Data {

@@ -8,7 +8,8 @@ export interface IPosition {
   purchasePrice: number,
   totalCostBasis: number,
   averageCostBasis: number,
-  sectorId: number
+  sectorId: number,
+  currentTotalValue: number
 }
 
 export interface IUpdatePosition {
