@@ -20,18 +20,18 @@ export interface CsvPosition {
 export interface ParsedCsvPosition {
   accountName: string;
   accountNumber: string;
-  costBasis: number;
-  costBasisPerShare: number;
-  currentValue: number;
+  costBasisTotal: number | string;
+  averageCostBasis: number | string;
+  currentValue: number | string;
   companyName: string;
-  lastPrice: number;
-  lastPriceChange: number;
-  percentOfAccount: number;
-  quantity: number;
+  lastPrice: number | string;
+  lastPriceChange: number | string;
+  percentOfAccount: number | string;
+  quantity: number | string;
   symbol: string;
-  todayGainLossDollar: number;
-  todayGainLossPercent: number;
-  totalGainLossDollar: number;
-  totalGainLossPercent: number;
+  todayGainLossDollar: number | string;
+  todayGainLossPercent: number | string;
+  totalGainLossDollar: number | string;
+  totalGainLossPercent: number | string;
   type: string;
 }
