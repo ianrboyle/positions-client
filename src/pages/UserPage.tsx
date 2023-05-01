@@ -132,7 +132,6 @@ export default function UserPage() {
 
   const handleCloseMenu = () => {
     setOpen(null);
-    console.log("handleclosemenu");
   };
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof IPosition) => {
