@@ -9,13 +9,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
+import { EditPositionForm } from "../components/forms/EditPositionForm";
 
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
+  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -29,17 +30,11 @@ const bull = (
 
 export const EditPositionPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const { data, error, isLoading } = useFetchUserQuery();
   const userData = data;
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(id);
-    console.log("event: ", event.currentTarget);
-    setOpen(event.currentTarget);
-  };
 
   const positionToEdit: IPosition | undefined = id ? userData?.positions.find((p) => p.id === parseInt(id)) : undefined;
   const positionSector = userData?.sectors.find((s) => s.id === positionToEdit?.sectorId);
@@ -58,31 +53,37 @@ export const EditPositionPage = () => {
         title={position?.symbol}
         subheader={position?.companyName}
         action={
-          <IconButton color="inherit">
+          <IconButton onClick={handleOpen} color="inherit">
             <Icon icon={"eva:edit-fill"} />
           </IconButton>
         }
       />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Stack spacing={3}>
+            <EditPositionForm
+              handleClose={handleClose}
+              position={position}
+              sectors={userData?.sectors}
+              industries={userData?.industries}
+            />
+          </Stack>
+        </Box>
+      </Modal>
       {!positionData ? (
         <CircularIndeterminate />
       ) : (
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {position?.companyName}
-          </Typography>
-          <Typography variant="h5" component="div">
-            {position?.symbol}
-          </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Current Total Value: ${position?.currentTotalValue}
           </Typography>
           <Typography variant="body2">Shares Owned: {position?.sharesOwned}</Typography>
-          <Typography variant="body2">
-            Sector: {sector?.sectorName}
-            <IconButton size="small" color="inherit" onClick={(event) => handleOpenMenu(event)}>
-              <Icon icon={"eva:edit-fill"} />
-            </IconButton>
-          </Typography>
+          <Typography variant="body2">Sector: {sector?.sectorName}</Typography>
           <Typography variant="body2">Industry: {industry?.industryName}</Typography>
         </CardContent>
       )}

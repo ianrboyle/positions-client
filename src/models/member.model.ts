@@ -13,7 +13,7 @@ export interface MemberDto {
     country: string;
     firstPosition: string;
     positions: IPosition[];
-    sectors: SectorDto[];
+    sectors: ISectorDto[];
     industries: IndustryDto[];
 }
 
@@ -25,7 +25,7 @@ export interface IndustryDto {
   positions: IPosition[];
 }
 
-export interface SectorDto {
+export interface ISectorDto {
   id: number;
   sectorName: string;
   totalValue: number;
