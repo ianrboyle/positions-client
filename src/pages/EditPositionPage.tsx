@@ -1,14 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useFetchUserQuery } from "../store";
 import { IPosition } from "../models/position.model";
-import { Card, CardActions, CardContent, CardHeader, IconButton, MenuItem, Popover, TextField } from "@mui/material";
-import { Grid, Button, Container, Stack, Typography, Modal, Box } from "@mui/material";
+import { Card, CardContent, CardHeader, IconButton } from "@mui/material";
+import { Stack, Typography, Modal, Box } from "@mui/material";
 import CircularIndeterminate from "../components/progress/Spinner";
-import EditIcon from "@mui/icons-material/Edit";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-import Tooltip from "@mui/material/Tooltip";
 import { EditPositionForm } from "../components/forms/EditPositionForm";
 
 const style = {
@@ -39,12 +36,12 @@ export const EditPositionPage = () => {
   const positionToEdit: IPosition | undefined = id ? userData?.positions.find((p) => p.id === parseInt(id)) : undefined;
   const positionSector = userData?.sectors.find((s) => s.id === positionToEdit?.sectorId);
   const positionIndustry = userData?.industries.find((i) => i.id === positionToEdit?.industryId);
-  const positionData = {
+  const positionInfo = {
     position: positionToEdit,
     sector: positionSector,
     industry: positionIndustry,
   };
-  const { position, sector, industry } = positionData;
+  const { position, sector, industry } = positionInfo;
 
   console.log(userData);
   return (
@@ -75,7 +72,7 @@ export const EditPositionPage = () => {
           </Stack>
         </Box>
       </Modal>
-      {!positionData ? (
+      {!positionInfo ? (
         <CircularIndeterminate />
       ) : (
         <CardContent>

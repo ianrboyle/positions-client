@@ -13,11 +13,15 @@ export interface IPosition {
 }
 
 export interface IUpdatePosition {
-  symbol: string,
-  id: number,
+  id?: number,
   sharesAdded?: number,
   sharesSold?: number,
   purchasePrice?: number,
-  sellPrice?: number
+  sellPrice?: number,
+  newSectorId?: number,
+  newIndustryId?: number,
+  oldIndustryId?: number,
+  oldSectorId?: number
+
 
 }
