@@ -1,8 +1,9 @@
 import { configureStore} from '@reduxjs/toolkit'
 import { IPosition } from '../models/position.model';
 
-import { positionsApi, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation } from './apis/positionsApi';
+import { positionsApi, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation } from './apis/positionsApi';
 import { userApi, useFetchUserQuery } from './apis/userApi';
+import { sectorsApi, useCreateSectorMutation } from './apis/sectorsApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export interface IPositionsState {
@@ -11,7 +12,8 @@ export interface IPositionsState {
 const store = configureStore({
   reducer: {
     [positionsApi.reducerPath]: positionsApi.reducer,
-    [userApi.reducerPath]: userApi.reducer
+    [userApi.reducerPath]: userApi.reducer,
+    [sectorsApi.reducerPath]: sectorsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(positionsApi.middleware).concat(userApi.middleware)
@@ -24,5 +26,7 @@ export {
   useFetchPositionsQuery,
   useFetchUserQuery,
   useAddPositionMutation,
-  useAddPositionsMutation
+  useAddPositionsMutation,
+  useUpdatePositionMutation,
+  useCreateSectorMutation
 }

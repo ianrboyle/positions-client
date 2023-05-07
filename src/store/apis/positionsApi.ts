@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IPosition, IUpdatePosition } from '../../models/position.model';
 import { ParsedCsvPosition } from '../../models/csv.model';
+import SectorPie from '../../sections/@dashboard/app/SectorPie';
 
 const pause = (duration: number) => {
   return new Promise((resolve) => {
@@ -9,7 +10,7 @@ const pause = (duration: number) => {
 }
 const positionsApi = createApi({
   reducerPath: 'positions',
-  tagTypes: ['Positions'],
+  tagTypes: ['Positions', 'Users'],
   baseQuery: fetchBaseQuery({ 
     baseUrl: `${process.env.REACT_APP_API_URL}`,
     //REMOVE FOR PROD
@@ -52,19 +53,22 @@ const positionsApi = createApi({
           }
         }
       }),
-      // updatePosition: builder.mutation({
-      //   invalidatesTags: ['Positions'],
-      //   query: ({symbol, sharesAdded, sharesSold, purchasePrice, sellPrice}: IUpdatePosition ) => {
-      //     return {
-      //       url: '/positions/add-position',
-      //       method: 'POST',
-      //       body: {
-      //         symbol: symbol,
-      //         sharesOwned: sharesOwned
-      //       }
-      //     }
-      //     }
-      //   }),
+      updatePosition: builder.mutation({
+        invalidatesTags: ['Positions', 'Users'],
+        query: ({id, newSectorId, newIndustryId, oldSectorId, oldIndustryId, sellPrice}: IUpdatePosition ) => {
+          return {
+            url: `/positions/update/${id}`,
+            method: 'PUT',
+            body: {
+              newSectorId: newSectorId,
+              positionId: id,
+              newIndustryId: newIndustryId,
+              oldSectorId: oldSectorId,
+              oldIndustryId: oldIndustryId
+            }
+          }
+          }
+        }),
       fetchPositions: builder.query<IPosition[], void>({
         providesTags: ['Positions'],
         query: () => {
@@ -78,7 +82,7 @@ const positionsApi = createApi({
   } 
 });
 
-export const { useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation } = positionsApi;
+export const { useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation } = positionsApi;
 export {positionsApi};
 
 

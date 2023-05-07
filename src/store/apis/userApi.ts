@@ -5,6 +5,7 @@ import { MemberDto } from '../../models/member.model';
 
 const userApi = createApi({
   reducerPath: 'user',
+  tagTypes: ['Users'],
   baseQuery: fetchBaseQuery({ 
     baseUrl: `${process.env.REACT_APP_API_URL}`,
     prepareHeaders: (headers, { getState }) => {
@@ -19,6 +20,7 @@ const userApi = createApi({
   endpoints (builder) {
     return {
       fetchUser: builder.query<MemberDto, void>({
+        providesTags: ['Users'],
         query: () => {
           return {  
             url: '/users',
