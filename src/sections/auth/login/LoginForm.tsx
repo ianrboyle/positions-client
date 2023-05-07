@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+
 // components
 import Iconify from "../../../components/iconify";
 import { loginUser } from "../../../services/positions.server";
@@ -18,22 +19,17 @@ export default function LoginForm() {
 
   const handleClick = () => {
     // setUser(user);
-    if (typeof(user) === "string" && typeof(password) === "string") {
+    if (typeof user === "string" && typeof password === "string") {
       const loginInfo = {
         username: user,
-        password: password
-      }
+        password: password,
+      };
 
       // loginUser(loginInfo).then(res => res)
-      AuthService.login(user,password).then((r ) =>{
+      AuthService.login(user, password).then((r) => {
         return r;
-       })
+      });
     }
-
-    
-
-    
-
 
     navigate("/dashboard", { replace: true });
   };
@@ -41,7 +37,13 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" id="user"  onChange={(e) => setUser(e.target.value)} value={user} />
+        <TextField
+          name="email"
+          label="Email address"
+          id="user"
+          onChange={(e) => setUser(e.target.value)}
+          value={user}
+        />
         <TextField
           name="password"
           label="Password"
@@ -58,7 +60,6 @@ export default function LoginForm() {
             ),
           }}
         />
- 
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>

@@ -24,10 +24,10 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  Modal
+  Modal,
 } from "@mui/material";
 // components
-import { Icon } from '@iconify/react';
+import { Icon } from "@iconify/react";
 import Label from "../components/label";
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
@@ -51,13 +51,13 @@ const TABLE_HEAD = [
 ];
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -85,13 +85,17 @@ function descendingComparator(a: IPosition, b: IPosition, orderBy: keyof IPositi
   return 0;
 }
 
-function getComparator(order: 'asc' | 'desc', orderBy: keyof IPosition) {
-  return order === 'desc'
+function getComparator(order: "asc" | "desc", orderBy: keyof IPosition) {
+  return order === "desc"
     ? (a: IPosition, b: IPosition) => descendingComparator(a, b, orderBy)
     : (a: IPosition, b: IPosition) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: IPosition[] | null, comparator: (a: IPosition, b: IPosition) => number, query?: string) {
+function applySortFilter(
+  array: IPosition[] | null,
+  comparator: (a: IPosition, b: IPosition) => number,
+  query?: string
+) {
   // if (array) {
   //   const stabilizedThis = array.map((el, index) => [el, index]);
   //   stabilizedThis.sort((a, b) => {
@@ -124,8 +128,8 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, id: number) => {
-    console.log(id)
-    console.log("event: ", event.currentTarget)
+    console.log(id);
+    console.log("event: ", event.currentTarget);
     setOpen(event.currentTarget);
     setPositionId(id);
   };
@@ -162,7 +166,7 @@ export default function UserPage() {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
-    console.log(newSelected)
+    console.log(newSelected);
   };
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -190,7 +194,6 @@ export default function UserPage() {
   // const isNotFound = !filteredUsers.length && !!filterName;
   const isNotFound = false;
 
-
   return (
     <>
       <Helmet>
@@ -202,114 +205,116 @@ export default function UserPage() {
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              User
+              Positions
             </Typography>
             <Button variant="contained" startIcon={<Icon icon="eva:plus-fill" />}>
-              New User
+              Create New Sector
             </Button>
           </Stack>
 
-          {positions && filteredUsers ? 
-          <Card>
-            <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-          
-        
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={positions.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, symbol, sharesOwned, companyName, currentTotalValue } = row;
-                    const selectedUser = selected.indexOf(id) !== -1;
+          {positions && filteredUsers ? (
+            <Card>
+              <UserListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
-                        </TableCell>
-                        
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <UserListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={positions.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
+                    <TableBody>
+                      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const { id, symbol, sharesOwned, companyName, currentTotalValue } = row;
+                        const selectedUser = selected.indexOf(id) !== -1;
 
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={symbol} src={avatarUrl} /> */}
-                            <Typography variant="subtitle2" noWrap>
-                              {symbol}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
+                        return (
+                          <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                            <TableCell padding="checkbox">
+                              <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
+                            </TableCell>
 
-                        <TableCell align="left">{sharesOwned}</TableCell>
+                            <TableCell component="th" scope="row" padding="none">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                {/* <Avatar alt={symbol} src={avatarUrl} /> */}
+                                <Typography variant="subtitle2" noWrap>
+                                  {symbol}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
 
-                        <TableCell align="left">{companyName}</TableCell>
+                            <TableCell align="left">{sharesOwned}</TableCell>
 
-                        <TableCell align="left">{currentTotalValue}</TableCell>
+                            <TableCell align="left">{companyName}</TableCell>
 
-                        {/* <TableCell align="left">
+                            <TableCell align="left">{currentTotalValue}</TableCell>
+
+                            {/* <TableCell align="left">
                           <Label color={(status === "banned" && "error") || "success"}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
-                            <Icon icon={"eva:more-vertical-fill"} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
+                            <TableCell align="right">
+                              <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
+                                <Icon icon={"eva:more-vertical-fill"} />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
+                    </TableBody>
 
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: "center",
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
+                    {isNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <Paper
+                              sx={{
+                                textAlign: "center",
+                              }}
+                            >
+                              <Typography variant="h6" paragraph>
+                                Not found
+                              </Typography>
 
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                              <Typography variant="body2">
+                                No results found for &nbsp;
+                                <strong>&quot;{filterName}&quot;</strong>.
+                                <br /> Try checking for typos or using complete words.
+                              </Typography>
+                            </Paper>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={positions.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          /> 
-          </Card> : null
-          }
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={positions.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          ) : null}
         </Container>
       ) : null}
       <Popover
@@ -331,7 +336,7 @@ export default function UserPage() {
         }}
       >
         <MenuItem>
-          <Icon icon={"eva:edit-fill"}  />
+          <Icon icon={"eva:edit-fill"} />
           <Link to={`/dashboard/edit-position/${positionId}`}>Edit</Link>
         </MenuItem>
 
@@ -341,18 +346,17 @@ export default function UserPage() {
         </MenuItem>
       </Popover>
       <Modal
-  open={modalOpen}
-  onClose={handleModalClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box sx={style}>
-    <Stack spacing={3}>
-      <AddPositionForm handleClose={handleModalClose}/>
-    </Stack>
-  </Box>
-</Modal>
-
+        open={modalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Stack spacing={3}>
+            <AddPositionForm handleClose={handleModalClose} />
+          </Stack>
+        </Box>
+      </Modal>
     </>
   );
 }

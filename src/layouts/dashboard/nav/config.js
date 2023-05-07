@@ -12,8 +12,8 @@ const navConfig = [
     icon: icon("ic_analytics"),
   },
   {
-    title: "user",
-    path: "/dashboard/user",
+    title: "positions",
+    path: "/dashboard/positions",
     icon: icon("ic_user"),
   },
   {
@@ -24,11 +24,6 @@ const navConfig = [
   {
     title: "blog",
     path: "/dashboard/blog",
-    icon: icon("ic_blog"),
-  },
-  {
-    title: "positions",
-    path: "/dashboard/positions",
     icon: icon("ic_blog"),
   },
   {
