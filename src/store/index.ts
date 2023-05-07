@@ -16,7 +16,7 @@ const store = configureStore({
     [sectorsApi.reducerPath]: sectorsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(positionsApi.middleware).concat(userApi.middleware)
+    getDefaultMiddleware().concat(positionsApi.middleware).concat(userApi.middleware).concat(sectorsApi.middleware)
 
 });
 

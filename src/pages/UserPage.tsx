@@ -38,6 +38,7 @@ import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 import USERLIST from "../_mock/user";
 import { IPosition } from "../models/position.model";
 import { AddPositionForm } from "../components/forms/AddPositionForm";
+import { CreateNewSectorForm } from "../components/forms/CreateNewSectorForm";
 
 // ----------------------------------------------------------------------
 
@@ -116,6 +117,9 @@ export default function UserPage() {
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const { data, error, isLoading } = useFetchPositionsQuery();
+  const [openCreateSectorModal, setOpenCreateSectorModal] = useState(false);
+  const handleOpenCreateSectorModal = () => setOpenCreateSectorModal(true);
+  const handleCloseCreateSectorModal = () => setOpenCreateSectorModal(false);
 
   const positions = !isLoading ? data : [];
   const [open, setOpen] = useState<HTMLElement | null>(null);
@@ -207,10 +211,22 @@ export default function UserPage() {
             <Typography variant="h4" gutterBottom>
               Positions
             </Typography>
-            <Button variant="contained" startIcon={<Icon icon="eva:plus-fill" />}>
+            <Button variant="contained" onClick={handleOpenCreateSectorModal} startIcon={<Icon icon="eva:plus-fill" />}>
               Create New Sector
             </Button>
           </Stack>
+          <Modal
+            open={openCreateSectorModal}
+            onClose={handleCloseCreateSectorModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Stack spacing={3}>
+                <CreateNewSectorForm handleClose={handleCloseCreateSectorModal} />
+              </Stack>
+            </Box>
+          </Modal>
 
           {positions && filteredUsers ? (
             <Card>
