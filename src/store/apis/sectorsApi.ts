@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IPosition, IUpdatePosition } from '../../models/position.model';
 import { ParsedCsvPosition } from '../../models/csv.model';
 import SectorPie from '../../sections/@dashboard/app/SectorPie';
-import { ISectorDto } from '../../models/member.model';
+import { ISectorDto, IndustryDto } from '../../models/member.model';
 
 const pause = (duration: number) => {
   return new Promise((resolve) => {
@@ -42,12 +42,25 @@ const sectorsApi = createApi({
             }
           }
         }
+      }),
+      createIndustry: builder.mutation({
+        invalidatesTags: ['Sectors'],
+        query: ({industryName, sectorId}: IndustryDto) => {
+          return {  
+            url: '/industries',
+            method: 'POST',
+            body: {
+              industryName: industryName,
+              sectorId: sectorId 
+            }
+          }
+        }
       })
     }
   } 
 });
 
-export const { useCreateSectorMutation } = sectorsApi;
+export const { useCreateSectorMutation, useCreateIndustryMutation } = sectorsApi;
 export {sectorsApi};
 
 

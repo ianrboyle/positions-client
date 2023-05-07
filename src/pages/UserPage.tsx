@@ -3,7 +3,7 @@ import { filter, isArrayLike } from "lodash";
 import { sentenceCase } from "change-case";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useFetchPositionsQuery } from "../store";
+import { useFetchPositionsQuery, useFetchUserQuery } from "../store";
 // @mui
 import {
   Card,
@@ -39,6 +39,7 @@ import USERLIST from "../_mock/user";
 import { IPosition } from "../models/position.model";
 import { AddPositionForm } from "../components/forms/AddPositionForm";
 import { CreateNewSectorForm } from "../components/forms/CreateNewSectorForm";
+import { CreateNewIndustryForm } from "../components/forms/CreateNewIndustryForm";
 
 // ----------------------------------------------------------------------
 
@@ -116,12 +117,17 @@ export default function UserPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
-  const { data, error, isLoading } = useFetchPositionsQuery();
+  // const { data, error, isLoading } = useFetchPositionsQuery();
+  const { data, error, isLoading } = useFetchUserQuery();
   const [openCreateSectorModal, setOpenCreateSectorModal] = useState(false);
   const handleOpenCreateSectorModal = () => setOpenCreateSectorModal(true);
   const handleCloseCreateSectorModal = () => setOpenCreateSectorModal(false);
+  const [openCreateIndustryModal, setOpenCreateIndustryModal] = useState(false);
+  const handleOpenCreateIndustryModal = () => setOpenCreateIndustryModal(true);
+  const handleCloseCreateIndustryModal = () => setOpenCreateIndustryModal(false);
 
-  const positions = !isLoading ? data : [];
+  const positions = !isLoading ? data?.positions : [];
+  const sectors = !isLoading ? data?.sectors : [];
   const [open, setOpen] = useState<HTMLElement | null>(null);
   const [positionId, setPositionId] = useState<number | null>(null);
   const [page, setPage] = useState<number>(0);
@@ -187,10 +193,6 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const handleEditPosition = (event: React.MouseEvent<unknown>) => {
-    // your implementation here
-  };
-
   const emptyRows = page > 0 && positions ? Math.max(0, (1 + page) * rowsPerPage - positions.length) : 0;
 
   // const filteredUsers = positions ? applySortFilter(positions, getComparator(order, orderBy), filterName) : null;
@@ -205,7 +207,7 @@ export default function UserPage() {
       </Helmet>
       {isLoading ? (
         <SkeletonAnimation />
-      ) : data && data.length > 0 ? (
+      ) : data && data?.sectors?.length > 0 ? (
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
@@ -213,6 +215,13 @@ export default function UserPage() {
             </Typography>
             <Button variant="contained" onClick={handleOpenCreateSectorModal} startIcon={<Icon icon="eva:plus-fill" />}>
               Create New Sector
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleOpenCreateIndustryModal}
+              startIcon={<Icon icon="eva:plus-fill" />}
+            >
+              Create New Industry
             </Button>
           </Stack>
           <Modal
@@ -224,6 +233,18 @@ export default function UserPage() {
             <Box sx={style}>
               <Stack spacing={3}>
                 <CreateNewSectorForm handleClose={handleCloseCreateSectorModal} />
+              </Stack>
+            </Box>
+          </Modal>
+          <Modal
+            open={openCreateIndustryModal}
+            onClose={handleCloseCreateIndustryModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Stack spacing={3}>
+                <CreateNewIndustryForm sectors={sectors} handleClose={handleCloseCreateIndustryModal} />
               </Stack>
             </Box>
           </Modal>

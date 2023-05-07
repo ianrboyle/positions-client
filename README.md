@@ -48,7 +48,10 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## NEEDS/TODO
 
 1. On position edit - when updating a position's sector or industry, the data needs to be auto refreshed on update click.
-2. Add create sector/ create industry
+<!-- 2. Add create industry
+
+- requires search bar to select which sector it belongs to -->
+
 3. Change where positions data is fetched from in positions table
 
 - currently comes from get-positions route in backend

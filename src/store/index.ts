@@ -3,7 +3,7 @@ import { IPosition } from '../models/position.model';
 
 import { positionsApi, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation } from './apis/positionsApi';
 import { userApi, useFetchUserQuery } from './apis/userApi';
-import { sectorsApi, useCreateSectorMutation } from './apis/sectorsApi';
+import { sectorsApi, useCreateSectorMutation, useCreateIndustryMutation } from './apis/sectorsApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export interface IPositionsState {
@@ -28,5 +28,6 @@ export {
   useAddPositionMutation,
   useAddPositionsMutation,
   useUpdatePositionMutation,
-  useCreateSectorMutation
+  useCreateSectorMutation, 
+  useCreateIndustryMutation
 }
