@@ -22,10 +22,10 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: "app", element: <DashboardAppPage /> },
-        { path: "user", element: <UserPage /> },
+        { path: "positions", element: <UserPage /> },
         { path: "products", element: <ProductsPage /> },
         { path: "blog", element: <BlogPage /> },
-        { path: "positions", element: <PositionsPage /> },
+        // { path: "positions", element: <PositionsPage /> },
         { path: "edit-position/:id", element: <EditPositionPage /> },
       ],
     },
