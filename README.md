@@ -44,3 +44,22 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## NEEDS/TODO
+
+1. On position edit - when updating a position's sector or industry, the data needs to be auto refreshed on update click.
+2. Add create sector/ create industry
+3. Change where positions data is fetched from in positions table
+
+- currently comes from get-positions route in backend
+- change to get-user route
+
+4. Add sector name and industry name to positions table
+5. Create sector and industry page - shows positions, sector (if industry page), industries (if sector page), etc
+6. On dashboard / home page, make sector/industry pie pieces clickable
+
+- link to sector/industry page
+
+## Questions
+
+1. Do we need a single position page - or is the table enough?
