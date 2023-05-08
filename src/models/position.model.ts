@@ -9,7 +9,9 @@ export interface IPosition {
   totalCostBasis: number,
   averageCostBasis: number,
   sectorId: number,
-  currentTotalValue: number
+  currentTotalValue: number,
+  sectorName?: string,
+  industryName?: string
 }
 
 export interface IUpdatePosition {

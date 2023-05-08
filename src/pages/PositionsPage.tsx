@@ -33,6 +33,7 @@ import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 import { IPosition } from "../models/position.model";
 import { CreateNewSectorForm } from "../components/forms/CreateNewSectorForm";
 import { CreateNewIndustryForm } from "../components/forms/CreateNewIndustryForm";
+import { ISectorDto, IndustryDto } from "../models/member.model";
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +42,8 @@ const TABLE_HEAD = [
   { id: "sharesOwned", label: "Shares Owned", alignRight: false },
   { id: "companyName", label: "Company Name", alignRight: false },
   { id: "currentTotalValue", label: "Current Total Value", alignRight: false },
-  { id: "currentPrice", label: "Current Price", alignRight: false },
+  { id: "sectorName", label: "Sector Name", alignRight: false },
+  { id: "industryName", label: "Industry Name", alignRight: false },
   { id: "" },
 ];
 
@@ -56,35 +58,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-// interface Column {
-//   id: 'symbol' | 'sharesOwned' | 'companyName'  | 'currentTotalValue' | 'currentPrice' | 'purchasePrice' | 'totalCostBasis' | 'averageCostBasis';
-//   label: string;
-//   minWidth?: number;
-//   align?: 'right';
-//   format?: (value: number) => string;
-// }
-
-// interface IData {
-//     positions: IPosition[] | undefined
-// }
-
 // ----------------------------------------------------------------------
-
-function descendingComparator(a: IPosition, b: IPosition, orderBy: keyof IPosition): number {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order: "asc" | "desc", orderBy: keyof IPosition) {
-  return order === "desc"
-    ? (a: IPosition, b: IPosition) => descendingComparator(a, b, orderBy)
-    : (a: IPosition, b: IPosition) => -descendingComparator(a, b, orderBy);
-}
 
 function applySortFilter(
   array: IPosition[] | null,
@@ -106,6 +80,23 @@ function applySortFilter(
   return array;
 }
 
+const appendNames = (positions: IPosition[], sectors: ISectorDto[], industries: IndustryDto[]) => {
+  const newPositions: IPosition[] = [];
+  if (positions && industries && sectors) {
+    positions.forEach((p) => {
+      const newObj = Object.assign({}, p);
+      newObj.sectorName = sectors.find((s) => s.id === p.sectorId)?.sectorName
+        ? sectors.find((s) => s.id === p.sectorId)?.sectorName
+        : "";
+      newObj.industryName = industries.find((i) => i.id === p.industryId)?.industryName;
+      newPositions.push(newObj);
+      return newObj;
+    });
+  }
+  console.log(newPositions);
+  return newPositions;
+};
+
 export default function PositionsPage() {
   // const { data, error, isLoading } = useFetchPositionsQuery();
   const { data, error, isLoading } = useFetchUserQuery();
@@ -116,8 +107,12 @@ export default function PositionsPage() {
   const handleOpenCreateIndustryModal = () => setOpenCreateIndustryModal(true);
   const handleCloseCreateIndustryModal = () => setOpenCreateIndustryModal(false);
 
-  const positions = !isLoading ? data?.positions : [];
+  const loadedPositions = !isLoading ? data?.positions : [];
+
   const sectors = !isLoading ? data?.sectors : [];
+  const industries = !isLoading ? data?.industries : [];
+  const positions = loadedPositions && sectors && industries ? appendNames(loadedPositions, sectors, industries) : [];
+
   const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
   const [positionId, setPositionId] = useState<number | null>(null);
   const [page, setPage] = useState<number>(0);
@@ -185,9 +180,9 @@ export default function PositionsPage() {
 
   const emptyRows = page > 0 && positions ? Math.max(0, (1 + page) * rowsPerPage - positions.length) : 0;
 
-  // const filteredUsers = positions ? applySortFilter(positions, getComparator(order, orderBy), filterName) : null;
-  const filteredUsers = positions;
-  // const isNotFound = !filteredUsers.length && !!filterName;
+  // const filteredPositions = positions ? applySortFilter(positions, getComparator(order, orderBy), filterName) : null;
+  const filteredPositions = positions;
+  // const isNotFound = !filteredPositions.length && !!filterName;
   const isNotFound = false;
 
   return (
@@ -239,7 +234,7 @@ export default function PositionsPage() {
             </Box>
           </Modal>
 
-          {positions && filteredUsers ? (
+          {positions && filteredPositions ? (
             <Card>
               <UserListToolbar
                 numSelected={selected.length}
@@ -260,14 +255,15 @@ export default function PositionsPage() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const { id, symbol, sharesOwned, companyName, currentTotalValue } = row;
-                        const selectedUser = selected.indexOf(id) !== -1;
+                      {filteredPositions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const { id, symbol, sharesOwned, companyName, currentTotalValue, sectorName, industryName } =
+                          row;
+                        const selectedPosition = selected.indexOf(id) !== -1;
 
                         return (
-                          <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                          <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedPosition}>
                             <TableCell padding="checkbox">
-                              <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
+                              <Checkbox checked={selectedPosition} onChange={(event) => handleClick(event, id)} />
                             </TableCell>
 
                             <TableCell component="th" scope="row" padding="none">
@@ -284,6 +280,9 @@ export default function PositionsPage() {
                             <TableCell align="left">{companyName}</TableCell>
 
                             <TableCell align="left">{currentTotalValue}</TableCell>
+                            {/* <TableCell align="left">{currentValue}</TableCell> */}
+                            {sectorName ? <TableCell align="left">{sectorName}</TableCell> : null}
+                            {industryName ? <TableCell align="left">{industryName}</TableCell> : null}
 
                             <TableCell align="right">
                               <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
