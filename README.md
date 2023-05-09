@@ -47,8 +47,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## NEEDS/TODO
 
-1. Create sector and industry page - shows positions, sector (if industry page), industries (if sector page), etc
-2. On dashboard / home page, make sector/industry pie pieces clickable
+1. Create industry page - shows positions, sector (if industry page), industries (if sector page), etc
+2. On dashboard / home page, make industry pie pieces clickable
 
 - link to sector/industry page
 
