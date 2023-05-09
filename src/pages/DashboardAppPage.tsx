@@ -1,49 +1,36 @@
-import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
+import { Helmet } from "react-helmet-async";
+import { faker } from "@faker-js/faker";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { useTheme } from "@mui/material/styles";
+import { Grid, Container, Typography } from "@mui/material";
 // components
-import Iconify from '../components/iconify';
-import { Icon } from '@iconify/react';
+import Iconify from "../components/iconify";
+import { Icon } from "@iconify/react";
 // sections
-import {
-  AppTasks,
-  AppNewsUpdate,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
-} from '../sections/@dashboard/app';
-import Papa from 'papaparse';
-import { useAddPositionsMutation, useFetchPositionsQuery, useFetchUserQuery } from '../store';
-import SectorPie from '../sections/@dashboard/app/SectorPie';
-import { IPieChartData } from '../models/pies.model';
-import { CsvPosition } from '../models/csv.model';
-import { parseCsvFile } from '../utils/formatCsvPositions';
-import CircularIndeterminate from '../components/progress/Spinner';
+import Papa from "papaparse";
+import { useAddPositionsMutation, useFetchPositionsQuery, useFetchUserQuery } from "../store";
+import SectorPie from "../sections/@dashboard/app/SectorPie";
+import { IPieChartData } from "../models/pies.model";
+import { CsvPosition } from "../models/csv.model";
+import { parseCsvFile } from "../utils/formatCsvPositions";
+import CircularIndeterminate from "../components/progress/Spinner";
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
- 
 
-// Load CSV file
-const [addPositions, results] = useAddPositionsMutation();
+  // Load CSV file
+  const [addPositions, results] = useAddPositionsMutation();
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       Papa.parse(file, {
         header: true,
         complete: (results: Papa.ParseResult<any>) => {
-          console.log(results.data)
+          console.log(results.data);
           const parsedData = parseCsvFile(results.data);
-          console.log(parsedData)
-          addPositions(parsedData.splice(21,22));
-
+          console.log(parsedData);
+          addPositions(parsedData.splice(21, 22));
         },
       });
     }
@@ -51,30 +38,32 @@ const [addPositions, results] = useAddPositionsMutation();
   // const { data, error, isLoading } = useFetchPositionsQuery();
   const { data, error, isLoading } = useFetchUserQuery();
   // if (data !== undefined){
-    const sectorChartData: IPieChartData[] | undefined = data?.sectors.map(s => {
-      return {
-        label: s.sectorName,
-        value: s.totalValue
-      }
-    })
-    const industryChartData: IPieChartData[] | undefined = data?.industries.map(i => {
-      return {
-        label: i.industryName,
-        value: i.totalValue
-      }
-    })
-    const positionChartData: IPieChartData[] | undefined = data?.positions.map(p => {
-      return {
-        label: p.symbol,
-        value: p.totalCostBasis
-      }
-    })
-
+  const sectorChartData: IPieChartData[] | undefined = data?.sectors.map((s) => {
+    return {
+      label: s.sectorName,
+      value: s.totalValue,
+      id: s.id,
+    };
+  });
+  const industryChartData: IPieChartData[] | undefined = data?.industries.map((i) => {
+    return {
+      label: i.industryName,
+      value: i.totalValue,
+      id: i.id,
+    };
+  });
+  const positionChartData: IPieChartData[] | undefined = data?.positions.map((p) => {
+    return {
+      label: p.symbol,
+      value: p.currentTotalValue,
+      id: p.id,
+    };
+  });
 
   // }
 
-  console.log(data)
-  console.log(sectorChartData)
+  console.log(data);
+  console.log(sectorChartData);
   return (
     <>
       <Helmet>
@@ -87,7 +76,6 @@ const [addPositions, results] = useAddPositionsMutation();
         </Typography>
 
         <Grid container spacing={3}>
-
           {/* ADD ACCOUNT TOTAL VALUE SOMEWHERE HERE */}
           {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} sx={undefined} />
@@ -100,7 +88,7 @@ const [addPositions, results] = useAddPositionsMutation();
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} sx={undefined} />
           </Grid> */}
-{/* 
+          {/* 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
@@ -140,35 +128,36 @@ const [addPositions, results] = useAddPositionsMutation();
               ]}
             />
           </Grid> */}
-          { sectorChartData !== undefined && sectorChartData.length > 0 ? 
-                    <Grid item xs={12} md={6} lg={4}>
-                    <SectorPie
-                      title="Sector Allocation"
-                      chartData={sectorChartData}
-                      chartColors={[
-                        theme.palette.primary.main,
-                        theme.palette.info.main,
-                        theme.palette.warning.main,
-                        theme.palette.error.main,
-                      ]} subheader={undefined}            />
-                  </Grid> 
-                  : null
-          }      
-          { positionChartData !== undefined && positionChartData.length > 0 ? 
-                    <Grid item xs={12} md={6} lg={4}>
-                    <SectorPie
-                      title="Position Allocation"
-                      chartData={positionChartData}
-                      chartColors={[
-                        theme.palette.primary.main,
-                        theme.palette.info.main,
-                        theme.palette.warning.main,
-                        theme.palette.error.main,
-                      ]} subheader={undefined}            />
-                  </Grid> 
-                  : null
-          }      
-
+          {sectorChartData !== undefined && sectorChartData.length > 0 ? (
+            <Grid item xs={12} md={6} lg={4}>
+              <SectorPie
+                title="Sector Allocation"
+                chartData={sectorChartData}
+                chartColors={[
+                  theme.palette.primary.main,
+                  theme.palette.info.main,
+                  theme.palette.warning.main,
+                  theme.palette.error.main,
+                ]}
+                subheader={undefined}
+              />
+            </Grid>
+          ) : null}
+          {positionChartData !== undefined && positionChartData.length > 0 ? (
+            <Grid item xs={12} md={6} lg={4}>
+              <SectorPie
+                title="Position Allocation"
+                chartData={positionChartData}
+                chartColors={[
+                  theme.palette.primary.main,
+                  theme.palette.info.main,
+                  theme.palette.warning.main,
+                  theme.palette.error.main,
+                ]}
+                subheader={undefined}
+              />
+            </Grid>
+          ) : null}
 
           {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
@@ -189,20 +178,21 @@ const [addPositions, results] = useAddPositionsMutation();
             />
           </Grid> */}
 
-          { industryChartData !== undefined && industryChartData.length > 0 ? 
-                    <Grid item xs={12} md={6} lg={4}>
-                    <SectorPie
-                      title="Industry Allocation"
-                      chartData={industryChartData}
-                      chartColors={[
-                        theme.palette.primary.main,
-                        theme.palette.info.main,
-                        theme.palette.warning.main,
-                        theme.palette.error.main,
-                      ]} subheader={undefined}            />
-                  </Grid> 
-                  : null
-          }      
+          {industryChartData !== undefined && industryChartData.length > 0 ? (
+            <Grid item xs={12} md={6} lg={4}>
+              <SectorPie
+                title="Industry Allocation"
+                chartData={industryChartData}
+                chartColors={[
+                  theme.palette.primary.main,
+                  theme.palette.info.main,
+                  theme.palette.warning.main,
+                  theme.palette.error.main,
+                ]}
+                subheader={undefined}
+              />
+            </Grid>
+          ) : null}
 
           {/* <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
@@ -215,7 +205,7 @@ const [addPositions, results] = useAddPositionsMutation();
                 postedAt: faker.date.recent(),
               }))} subheader={undefined}            />
           </Grid> */}
-{/* 
+          {/* 
           <Grid item xs={12} md={6} lg={4}>
             <AppOrderTimeline
               title="Order Timeline"
@@ -232,7 +222,7 @@ const [addPositions, results] = useAddPositionsMutation();
                 time: faker.date.past(),
               }))} subheader={undefined}            />
           </Grid> */}
-{/* 
+          {/* 
           <Grid item xs={12} md={6} lg={4}>
             <AppTrafficBySite
               title="Traffic by Site"
@@ -271,14 +261,7 @@ const [addPositions, results] = useAddPositionsMutation();
                 { id: '5', label: 'Sprint Showcase' },
               ]} subheader={undefined}            />
           </Grid> */}
-                {results.isLoading ? 
-    
-    <CircularIndeterminate /> :
-
-      <input type="file" onChange={handleFileUpload} />
-
-
-    }
+          {results.isLoading ? <CircularIndeterminate /> : <input type="file" onChange={handleFileUpload} />}
         </Grid>
       </Container>
     </>

@@ -10,6 +10,7 @@ import Page404 from "./pages/Page404";
 import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
 import { EditPositionPage } from "./pages/EditPositionPage";
+import { SectorPage } from "./pages/SectorPage";
 
 // ----------------------------------------------------------------------
 
@@ -26,6 +27,7 @@ export default function Router() {
         { path: "blog", element: <BlogPage /> },
         // { path: "positions", element: <PositionsPage /> },
         { path: "edit-position/:id", element: <EditPositionPage /> },
+        { path: "sector/:id", element: <SectorPage /> },
       ],
     },
     {
