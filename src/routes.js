@@ -11,6 +11,7 @@ import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
 import { EditPositionPage } from "./pages/EditPositionPage";
 import { SectorPage } from "./pages/SectorPage";
+import { IndustryPage } from "./pages/IndustryPage";
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ export default function Router() {
         // { path: "positions", element: <PositionsPage /> },
         { path: "position/:id", element: <EditPositionPage /> },
         { path: "sector/:id", element: <SectorPage /> },
+        { path: "industry/:id", element: <IndustryPage /> },
       ],
     },
     {

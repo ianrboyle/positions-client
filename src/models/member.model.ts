@@ -23,6 +23,7 @@ export interface IndustryDto {
   totalValue: number;
   sectorId: number;
   positions: IPosition[];
+  sectorName?: string
 }
 
 export interface ISectorDto {

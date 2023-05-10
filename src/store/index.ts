@@ -4,7 +4,7 @@ import { IPosition } from '../models/position.model';
 // import { positionsApi, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation } from './apis/positionsApi';
 // import { userApi, useFetchUserQuery } from './apis/userApi';
 // import { sectorsApi, useCreateSectorMutation, useCreateIndustryMutation } from './apis/sectorsApi';
-import { stockApi, useCreateSectorMutation, useCreateIndustryMutation, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation, useFetchUserQuery, useFetchSectorQuery } from './apis/stocksAppApi';
+import { stockApi, useCreateSectorMutation, useCreateIndustryMutation, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation, useFetchUserQuery, useFetchSectorQuery, useFetchIndustryQuery } from './apis/stocksAppApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export interface IPositionsState {
@@ -33,5 +33,6 @@ export {
   useUpdatePositionMutation,
   useCreateSectorMutation, 
   useCreateIndustryMutation,
-  useFetchSectorQuery
+  useFetchSectorQuery, 
+  useFetchIndustryQuery
 }

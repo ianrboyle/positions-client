@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
-import { useFetchSectorQuery } from "../store";
+import { useFetchIndustryQuery, useFetchSectorQuery } from "../store";
 import { useTheme } from "@mui/material/styles";
 // @mui
 import { Stack, Container, Typography, Grid } from "@mui/material";
@@ -23,20 +23,13 @@ const TABLE_HEAD = [
   { id: "" },
 ];
 
-export const SectorPage = () => {
+export const IndustryPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { data, error, isLoading } = useFetchSectorQuery(id ?? "");
+  const { data, error, isLoading } = useFetchIndustryQuery(id ?? "");
   const theme = useTheme();
-  const sector = data;
-  const industryChartData: IPieChartData[] | undefined = sector?.industries?.map((i) => {
-    return {
-      label: i.industryName,
-      value: i.totalValue,
-      id: i.id,
-      type: "industry",
-    };
-  });
-  const positionChartData: IPieChartData[] | undefined = sector?.positions?.map((p) => {
+  const industry = data;
+
+  const positionChartData: IPieChartData[] | undefined = industry?.positions?.map((p) => {
     return {
       label: p.symbol,
       value: p.currentTotalValue,
@@ -52,34 +45,18 @@ export const SectorPage = () => {
       </Helmet>
       {isLoading ? (
         <SkeletonAnimation />
-      ) : sector && sector?.id > 0 ? (
+      ) : industry && industry?.id > 0 ? (
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              {sector.sectorName}
+              {industry.industryName}
             </Typography>
           </Stack>
-          {industryChartData !== undefined && industryChartData.length > 1 ? (
-            <Grid item xs={12} md={6} lg={4}>
-              <SectorPie
-                title="Industry Allocation"
-                chartData={industryChartData}
-                chartColors={[
-                  theme.palette.primary.main,
-                  theme.palette.info.main,
-                  theme.palette.warning.main,
-                  theme.palette.error.main,
-                ]}
-                subheader={undefined}
-              />
-            </Grid>
-          ) : industryChartData !== undefined && industryChartData.length === 1 ? (
-            <Grid item xs={12} md={6} lg={4}>
-              <Typography variant="h6" gutterBottom>
-                {industryChartData[0].label}: ${industryChartData[0].value}
-              </Typography>
-            </Grid>
-          ) : null}
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h6" gutterBottom>
+              Sector: {industry.sectorName}
+            </Typography>
+          </Stack>
           {positionChartData !== undefined && positionChartData.length > 1 ? (
             <Grid item xs={12} md={6} lg={4}>
               <SectorPie

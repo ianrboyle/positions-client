@@ -63,6 +63,14 @@ const stockApi = createApi({
           }
         }
     }),
+    fetchIndustry: builder.query<IndustryDto, string>({
+      query: (id: string) => {
+        return {  
+          url: `/industries/${id}`,
+          method: 'GET'
+        }
+      }
+    }), 
     addPosition: builder.mutation({
       invalidatesTags: ['Users'],
       query: ({symbol, sharesOwned}: IPosition) => {
@@ -115,7 +123,7 @@ const stockApi = createApi({
   } 
 });
 
-export const { useFetchUserQuery, useCreateSectorMutation, useCreateIndustryMutation, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation, useFetchSectorQuery } = stockApi;
+export const { useFetchUserQuery, useCreateSectorMutation, useCreateIndustryMutation, useFetchPositionsQuery, useAddPositionMutation, useAddPositionsMutation, useUpdatePositionMutation, useFetchSectorQuery, useFetchIndustryQuery } = stockApi;
 export {stockApi};
 
 
