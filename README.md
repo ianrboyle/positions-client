@@ -47,11 +47,17 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## NEEDS/TODO
 
-1. Create industry page - shows positions, sector (if industry page), industries (if sector page), etc
-2. On dashboard / home page, make industry pie pieces clickable
-3. Add percent of account values for sector / industry - maybe a backend thing?
+1. Add percent of account values for sector / industry - maybe a backend thing?
 
-- link to sector/industry page
+- should calculation be done each time the data is fetched?
+- theoretically, it will constantly be changing, though not in the mvp
+- but for now leave it as as static
+- but because it could always be changing, maybe doing it on the frontend would be the best option
+
+2. Download csv of position data with sector and industry info
+3. Download csv of sector data
+4. Download csv of industry data
+5. Clean up code. remove unnecessary code
 
 ## Questions
 
