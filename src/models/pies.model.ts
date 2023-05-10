@@ -1,5 +1,6 @@
 export interface IPieChartData {
   label: string,
   id: number,
-  value: number
+  value: number,
+  type?: string
 }

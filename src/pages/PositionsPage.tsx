@@ -359,7 +359,7 @@ export default function PositionsPage() {
       >
         <MenuItem>
           <Icon icon={"eva:edit-fill"} />
-          <Link to={`/dashboard/edit-position/${positionId}`}>Edit</Link>
+          <Link to={`/dashboard/position/${positionId}`}>Edit</Link>
         </MenuItem>
 
         <MenuItem sx={{ color: "error.main" }}>

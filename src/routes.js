@@ -26,7 +26,7 @@ export default function Router() {
         { path: "products", element: <ProductsPage /> },
         { path: "blog", element: <BlogPage /> },
         // { path: "positions", element: <PositionsPage /> },
-        { path: "edit-position/:id", element: <EditPositionPage /> },
+        { path: "position/:id", element: <EditPositionPage /> },
         { path: "sector/:id", element: <SectorPage /> },
       ],
     },

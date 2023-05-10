@@ -43,6 +43,7 @@ export default function DashboardAppPage() {
       label: s.sectorName,
       value: s.totalValue,
       id: s.id,
+      type: "sector",
     };
   });
   const industryChartData: IPieChartData[] | undefined = data?.industries.map((i) => {
@@ -50,6 +51,7 @@ export default function DashboardAppPage() {
       label: i.industryName,
       value: i.totalValue,
       id: i.id,
+      type: "industry",
     };
   });
   const positionChartData: IPieChartData[] | undefined = data?.positions.map((p) => {
@@ -57,6 +59,7 @@ export default function DashboardAppPage() {
       label: p.symbol,
       value: p.currentTotalValue,
       id: p.id,
+      type: "position",
     };
   });
 

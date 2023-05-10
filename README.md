@@ -49,6 +49,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 1. Create industry page - shows positions, sector (if industry page), industries (if sector page), etc
 2. On dashboard / home page, make industry pie pieces clickable
+3. Add percent of account values for sector / industry - maybe a backend thing?
 
 - link to sector/industry page
 

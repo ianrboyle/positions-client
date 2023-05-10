@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 372;
-const LEGEND_HEIGHT = 72;
+const LEGEND_HEIGHT = 0;
 
 const StyledChartWrapper = styled("div")(({ theme }) => ({
   height: CHART_HEIGHT,
@@ -63,16 +63,15 @@ export default function SectorPie({
 
   const chartSeries = chartData?.map((i: IPieChartData) => i.value);
   const chartIds = chartData?.map((cD: IPieChartData) => cD.id);
-
+  const chartType = chartData[0]?.type;
   const chartOptions = useChart({
     chart: {
       events: {
         dataPointSelection: (event: any, chartContext: any, config: any) => {
-          console.log(config.w.config.chartIds[config.dataPointIndex]);
           const id = config.w.config.chartIds[config.dataPointIndex];
           const delay = 100;
           const delayPromise = new Promise((resolve) => setTimeout(resolve, delay));
-          delayPromise.then(() => navigate(`/dashboard/sector/${id}`));
+          delayPromise.then(() => navigate(`/dashboard/${chartType}/${id}`));
         },
       },
     },
@@ -96,18 +95,8 @@ export default function SectorPie({
     plotOptions: {
       pie: { donut: { labels: { show: false } } },
     },
-    events: {
-      click: function (event: any, chartContext: any, config: any) {
-        console.log(config.label);
-      },
-      mouseMove: function (event: any, chartContext: any, config: any) {
-        console.log(config);
-      },
-      dataPointSelection: (event: any, chartContext: any, config: any) => {
-        console.log("CONGId", config);
-      },
-    },
     chartIds: chartIds,
+    chartType: chartType,
   });
 
   return (
