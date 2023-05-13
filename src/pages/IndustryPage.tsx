@@ -57,6 +57,12 @@ export const IndustryPage = () => {
               Sector: {industry.sectorName}
             </Typography>
           </Stack>
+
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" gutterBottom>
+              Percent of Account: {(industry.percentOfAccount * 100).toFixed(2)}%
+            </Typography>
+          </Grid>
           {positionChartData !== undefined && positionChartData.length > 1 ? (
             <Grid item xs={12} md={6} lg={4}>
               <SectorPie

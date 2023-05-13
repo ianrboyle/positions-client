@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
-import { useFetchSectorQuery } from "../store";
+import { useFetchSectorQuery, useFetchUserQuery } from "../store";
 import { useTheme } from "@mui/material/styles";
 // @mui
 import { Stack, Container, Typography, Grid } from "@mui/material";
@@ -26,6 +26,7 @@ const TABLE_HEAD = [
 export const SectorPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, error, isLoading } = useFetchSectorQuery(id ?? "");
+
   const theme = useTheme();
   const sector = data;
   const industryChartData: IPieChartData[] | undefined = sector?.industries?.map((i) => {
@@ -59,6 +60,11 @@ export const SectorPage = () => {
               {sector.sectorName}
             </Typography>
           </Stack>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" gutterBottom>
+              Percent of Account: {(sector.percentOfAccount * 100).toFixed(2)}%
+            </Typography>
+          </Grid>
           {industryChartData !== undefined && industryChartData.length > 1 ? (
             <Grid item xs={12} md={6} lg={4}>
               <SectorPie
