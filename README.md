@@ -53,11 +53,16 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - theoretically, it will constantly be changing, though not in the mvp
 - but for now leave it as as static
 - but because it could always be changing, maybe doing it on the frontend would be the best option
+- then again, current value will also always be changing - currently not in the mvp though
 
-2. Download csv of position data with sector and industry info
-3. Download csv of sector data
-4. Download csv of industry data
-5. Clean up code. remove unnecessary code
+2. Be able to add multiple positions to a sector at once
+3. Download csv of position data with sector and industry info
+4. Download csv of sector data
+5. Download csv of industry data
+6. Clean up code. remove unnecessary code
+7. implement a useEffect somewhere?
+8. Rewrite code to have just one form - create industry, sector, add position. based on button click will
+9. Fix textfield/autocomplete label bug
 
 ## Questions
 
