@@ -31,7 +31,7 @@ export const CreateNewIndustryForm = ({ sectors, handleClose }: CreateIndustryFo
     }
   };
 
-  const handleSelectSector = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
+  const handleSelectSector = (event: React.SyntheticEvent<Element, Event>, value: any) => {
     const selectedSector = sectors?.find((s) => s.sectorName === value);
     console.log(selectedSector);
     if (selectedSector) {
@@ -53,8 +53,11 @@ export const CreateNewIndustryForm = ({ sectors, handleClose }: CreateIndustryFo
               id="sector-search"
               freeSolo
               onChange={handleSelectSector}
-              options={sectors.map((s) => s.sectorName)}
-              renderInput={(params) => <TextField {...params} label={selectedSector?.sectorName} />}
+              getOptionLabel={(option) => (typeof option != "string" ? option.sectorName : "")}
+              options={sectors}
+              renderInput={(params) => (
+                <TextField {...params} label={selectedSector ? selectedSector.sectorName : "Select Sector"} />
+              )}
             />
           ) : null}
           <TextField label="Industry Name" {...register("industryName")} />
