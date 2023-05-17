@@ -36,6 +36,7 @@ import { CreateNewIndustryForm } from "../components/forms/CreateNewIndustryForm
 import { ISectorDto, IndustryDto } from "../models/member.model";
 import { tickerSearch } from "../services/positions.server";
 import { ModalForm } from "../components/forms/ModalForm";
+import { AddPositionForm } from "../components/forms/AddPositionForm";
 
 // ----------------------------------------------------------------------
 
@@ -114,6 +115,11 @@ export default function PositionsPage() {
   const [openCreateIndustryModal, setOpenCreateIndustryModal] = useState(false);
   const handleOpenCreateIndustryModal = () => setOpenCreateIndustryModal(true);
   const handleCloseCreateIndustryModal = () => setOpenCreateIndustryModal(false);
+
+  //newPosition modal
+  const [openCreatePositionModal, setOpenCreatePositionModal] = useState(false);
+  const handleOpenCreatePositionModal = () => setOpenCreatePositionModal(true);
+  const handleCloseCreatePositionModal = () => setOpenCreatePositionModal(false);
 
   const loadedPositions = !isLoading ? data?.positions : [];
 
@@ -216,6 +222,13 @@ export default function PositionsPage() {
             >
               Create New Industry
             </Button>
+            <Button
+              variant="contained"
+              onClick={handleOpenCreatePositionModal}
+              startIcon={<Icon icon="eva:plus-fill" />}
+            >
+              Create New Position
+            </Button>
           </Stack>
           <Modal
             open={openCreateSectorModal}
@@ -249,6 +262,18 @@ export default function PositionsPage() {
                   mutationHook={industryMutationHook}
                   handleClose={handleCloseCreateIndustryModal}
                 />
+              </Stack>
+            </Box>
+          </Modal>
+          <Modal
+            open={openCreatePositionModal}
+            onClose={handleCloseCreatePositionModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Stack spacing={3}>
+                <AddPositionForm handleClose={handleCloseCreatePositionModal} />
               </Stack>
             </Box>
           </Modal>
