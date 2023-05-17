@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useFetchUserQuery } from "../store";
+import { useCreateIndustryMutation, useCreateSectorMutation, useFetchUserQuery } from "../store";
 // @mui
 import {
   Card,
@@ -34,6 +34,8 @@ import { IPosition } from "../models/position.model";
 import { CreateNewSectorForm } from "../components/forms/CreateNewSectorForm";
 import { CreateNewIndustryForm } from "../components/forms/CreateNewIndustryForm";
 import { ISectorDto, IndustryDto } from "../models/member.model";
+import { tickerSearch } from "../services/positions.server";
+import { ModalForm } from "../components/forms/ModalForm";
 
 // ----------------------------------------------------------------------
 
@@ -100,9 +102,15 @@ const appendNames = (positions: IPosition[], sectors: ISectorDto[], industries: 
 export default function PositionsPage() {
   // const { data, error, isLoading } = useFetchPositionsQuery();
   const { data, error, isLoading } = useFetchUserQuery();
+
+  // sector modal
+  const sectorMutationHook = useCreateSectorMutation as any;
   const [openCreateSectorModal, setOpenCreateSectorModal] = useState(false);
   const handleOpenCreateSectorModal = () => setOpenCreateSectorModal(true);
   const handleCloseCreateSectorModal = () => setOpenCreateSectorModal(false);
+
+  //industry modal
+  const industryMutationHook = useCreateIndustryMutation as any;
   const [openCreateIndustryModal, setOpenCreateIndustryModal] = useState(false);
   const handleOpenCreateIndustryModal = () => setOpenCreateIndustryModal(true);
   const handleCloseCreateIndustryModal = () => setOpenCreateIndustryModal(false);
@@ -217,7 +225,12 @@ export default function PositionsPage() {
           >
             <Box sx={style}>
               <Stack spacing={3}>
-                <CreateNewSectorForm handleClose={handleCloseCreateSectorModal} />
+                <ModalForm
+                  entityName="Sector"
+                  sectors={sectors}
+                  mutationHook={sectorMutationHook}
+                  handleClose={handleCloseCreateSectorModal}
+                />
               </Stack>
             </Box>
           </Modal>
@@ -229,7 +242,13 @@ export default function PositionsPage() {
           >
             <Box sx={style}>
               <Stack spacing={3}>
-                <CreateNewIndustryForm sectors={sectors} handleClose={handleCloseCreateIndustryModal} />
+                <ModalForm
+                  entityName="Industry"
+                  sectors={sectors}
+                  industries={industries}
+                  mutationHook={industryMutationHook}
+                  handleClose={handleCloseCreateIndustryModal}
+                />
               </Stack>
             </Box>
           </Modal>
