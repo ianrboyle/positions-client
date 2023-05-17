@@ -62,7 +62,10 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 6. Clean up code. remove unnecessary code
 7. implement a useEffect somewhere?
 8. Rewrite code to have just one form - create industry, sector, add position. based on button click will
-9. Fix textfield/autocomplete label bug
+9. Do not allow sector with same name to be created - backend or frontend?
+10. same with industry
+
+- probably frontend validation - check to see if sector name already exists
 
 ## Questions
 
