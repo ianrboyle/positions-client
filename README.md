@@ -47,26 +47,14 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## NEEDS/TODO
 
-1. Add percent of account values for sector / industry - maybe a backend thing?
-
-- should calculation be done each time the data is fetched?
-- theoretically, it will constantly be changing, though not in the mvp
-- but for now leave it as as static
-- but because it could always be changing, maybe doing it on the frontend would be the best option
-- then again, current value will also always be changing - currently not in the mvp though
-
-2. Be able to add multiple positions to a sector at once
-3. Download csv of position data with sector and industry info
-4. Download csv of sector data
-5. Download csv of industry data
-6. Clean up code. remove unnecessary code
-7. implement a useEffect somewhere?
-8. Rewrite code to have just one form - create industry, sector, add position. based on button click will
-9. Do not allow sector with same name to be created - backend or frontend?
-10. same with industry
-
-- probably frontend validation - check to see if sector name already exists
+1. Be able to add multiple positions to a sector at once
+2. Download csv of position data with sector and industry info
+3. Download csv of sector data
+4. Download csv of industry data
+5. Clean up code. remove unnecessary code
 
 ## Questions
 
 1. Do we need a single position page - or is the table enough?
+
+- answer: probably not
