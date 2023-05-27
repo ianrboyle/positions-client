@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
-import { useFetchIndustryQuery, useFetchSectorQuery } from "../store";
+import { useFetchIndustryQuery } from "../store";
 import { useTheme } from "@mui/material/styles";
 // @mui
 import { Stack, Container, Typography, Grid } from "@mui/material";
@@ -12,16 +12,6 @@ import { IPieChartData } from "../models/pies.model";
 import SectorPie from "../sections/@dashboard/app/SectorPie";
 
 // ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: "symbol", label: "Symbol", alignRight: false },
-  { id: "sharesOwned", label: "Shares Owned", alignRight: false },
-  { id: "companyName", label: "Company Name", alignRight: false },
-  { id: "currentTotalValue", label: "Current Total Value", alignRight: false },
-  { id: "sectorName", label: "Sector Name", alignRight: false },
-  { id: "industryName", label: "Industry Name", alignRight: false },
-  { id: "" },
-];
 
 export const IndustryPage = () => {
   const { id } = useParams<{ id: string }>();

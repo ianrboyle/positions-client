@@ -13,16 +13,6 @@ import SectorPie from "../sections/@dashboard/app/SectorPie";
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [
-  { id: "symbol", label: "Symbol", alignRight: false },
-  { id: "sharesOwned", label: "Shares Owned", alignRight: false },
-  { id: "companyName", label: "Company Name", alignRight: false },
-  { id: "currentTotalValue", label: "Current Total Value", alignRight: false },
-  { id: "sectorName", label: "Sector Name", alignRight: false },
-  { id: "industryName", label: "Industry Name", alignRight: false },
-  { id: "" },
-];
-
 export const SectorPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, error, isLoading } = useFetchSectorQuery(id ?? "");

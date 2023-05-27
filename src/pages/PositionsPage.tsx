@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCreateIndustryMutation, useCreateSectorMutation, useFetchUserQuery } from "../store";
 // @mui
@@ -31,10 +31,7 @@ import SkeletonAnimation from "../components/progress/Skeleton";
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import { IPosition } from "../models/position.model";
-import { CreateNewSectorForm } from "../components/forms/CreateNewSectorForm";
-import { CreateNewIndustryForm } from "../components/forms/CreateNewIndustryForm";
 import { ISectorDto, IndustryDto } from "../models/member.model";
-import { tickerSearch } from "../services/positions.server";
 import { ModalForm } from "../components/forms/ModalForm";
 import { AddPositionForm } from "../components/forms/AddPositionForm";
 
